@@ -1,0 +1,4 @@
+# file formats which must be ignored by git
+*.npy
+*.cif
+*.pickle

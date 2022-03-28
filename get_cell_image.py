@@ -1,3 +1,6 @@
+# Generate cell image from a cif or POSCAR file
+# Last modified : 28-03-2022 (by Arijit Dutta)
+
 import sys
 import math
 import os
@@ -15,7 +18,7 @@ import multiprocessing
 import pickle
 
 def get_atomlist_atomindex():
-#	cod_atomlist = ['Ru', 'Re', 'Ra', 'Rb', 'Rn', 'Rh', 'Be', 'Ba', 'Bi', 'Bk', 'Br', 'H', 'P', 'Os', 'Ge', 'Gd', 'Ga', 'Pr', 'Pt', 'Pu', 'C', 'Pb', 'Pa', 'Pd', 'Cd', 'Po', 'Pm', 'Ho', 'Hf', 'Hg', 'He', 'Mg', 'K', 'Mn', 'O', 'S', 'W', 'Zn', 'Eu', 'Zr', 'Er', 'Ni', 'Na', 'Nb', 'Nd', 'Ne', 'Np', 'Fe', 'B', 'F', 'Sr', 'N', 'Kr', 'Si', 'Sn', 'Sm', 'V', 'Sc', 'Sb', 'Se', 'Co', 'Cm', 'Cl', 'Ca', 'Cf', 'Ce', 'Xe', 'Tm', 'Cs', 'Cr', 'Cu', 'La', 'Li', 'Tl', 'Lu', 'Th', 'Ti', 'Te', 'Tb', 'Tc', 'Ta', 'Yb', 'Dy', 'I', 'U', 'Y', 'Ac', 'Ag', 'Ir', 'Am', 'Al', 'As', 'Ar', 'Au', 'In', 'Mo'] # 96
+	cod_atomlist = ['Ru', 'Re', 'Ra', 'Rb', 'Rn', 'Rh', 'Be', 'Ba', 'Bi', 'Bk', 'Br', 'H', 'P', 'Os', 'Ge', 'Gd', 'Ga', 'Pr', 'Pt', 'Pu', 'C', 'Pb', 'Pa', 'Pd', 'Cd', 'Po', 'Pm', 'Ho', 'Hf', 'Hg', 'He', 'Mg', 'K', 'Mn', 'O', 'S', 'W', 'Zn', 'Eu', 'Zr', 'Er', 'Ni', 'Na', 'Nb', 'Nd', 'Ne', 'Np', 'Fe', 'B', 'F', 'Sr', 'N', 'Kr', 'Si', 'Sn', 'Sm', 'V', 'Sc', 'Sb', 'Se', 'Co', 'Cm', 'Cl', 'Ca', 'Cf', 'Ce', 'Xe', 'Tm', 'Cs', 'Cr', 'Cu', 'La', 'Li', 'Tl', 'Lu', 'Th', 'Ti', 'Te', 'Tb', 'Tc', 'Ta', 'Yb', 'Dy', 'I', 'U', 'Y', 'Ac', 'Ag', 'Ir', 'Am', 'Al', 'As', 'Ar', 'Au', 'In', 'Mo'] # 96
 
 #	mp_atomlist = ['Ru', 'Re', 'Rb', 'Rh', 'Be', 'Ba', 'Bi', 'Br', 'H', 'P', 'Os', 'Ge', 'Gd', 'Ga', 'Pr', 'Pt', 'Pu', 'Mg', 'Pb','Pa', 'Pd', 'Cd', 'Pm', 'Ho', 'Hf', 'Hg', 'He', 'C', 'K', 'Mn', 'O', 'S', 'W', 'Zn', 'Eu', 'Zr', 'Er', 'Ni', 'Na','Nb', 'Nd', 'Ne', 'Np', 'Fe', 'B', 'F', 'Sr', 'N', 'Kr', 'Si', 'Sn', 'Sm', 'V', 'Sc', 'Sb', 'Se', 'Co', 'Cl', 'Ca','Ce', 'Xe', 'Tm', 'Cs', 'Cr', 'Cu', 'La', 'Li', 'Tl', 'Lu', 'Th', 'Ti', 'Te', 'Tb', 'Tc', 'Ta', 'Yb', 'Dy', 'I','U', 'Y', 'Ac', 'Ag', 'Ir', 'Al', 'As', 'Ar', 'Au', 'In', 'Mo'] #89
 
@@ -104,7 +107,7 @@ def file2image(args):
 		tmp = inputfile.split('/')[-1].split('.')[0]; tmp2 = inputfile.split('.')[0]
 		touchfile = tmp2+'.touchtouch'
 		filename2 = './'+tmp+'_64.pickle'
-		savefilename = './'+tmp+'_32.npy'#'.pickle'
+		savefilename = './'+tmp+'_32.npy'#.pickle'
 		if os.path.isfile(filename2) or os.path.isfile(savefilename):
 			print('already made pickle')
 			pass
@@ -121,7 +124,8 @@ def file2image(args):
 		nbins = args.nbins # the number of grid for generated output image
 	
 		image,channellist = get_image_all_atoms(extract_cell(atoms),nbins,scale,norm,num_cores)
-		image2pickle(image,channellist,savefilename)
+		#image2pickle(image,channellist,savefilename) # This exports the image file in a bad format which is not compatible with the rest of the codes
+		np.save(savefilename,image,allow_pickle=True, fix_imports=True) # this rectifies the problem
 		os.system('rm '+touchfile)
 	return 1
 
