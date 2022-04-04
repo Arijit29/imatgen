@@ -15,14 +15,14 @@ import multiprocessing
 import pickle
 
 def get_atomlist_atomindex():
-	cod_atomlist = ['Ru', 'Re', 'Ra', 'Rb', 'Rn', 'Rh', 'Be', 'Ba', 'Bi', 'Bk', 'Br', 'H', 'P', 'Os', 'Ge', 'Gd', 'Ga', 'Pr', 'Pt', 'Pu', 'C', 'Pb', 'Pa', 'Pd', 'Cd', 'Po', 'Pm', 'Ho', 'Hf', 'Hg', 'He', 'Mg', 'K', 'Mn', 'O', 'S', 'W', 'Zn', 'Eu', 'Zr', 'Er', 'Ni', 'Na', 'Nb', 'Nd', 'Ne', 'Np', 'Fe', 'B', 'F', 'Sr', 'N', 'Kr', 'Si', 'Sn', 'Sm', 'V', 'Sc', 'Sb', 'Se', 'Co', 'Cm', 'Cl', 'Ca', 'Cf', 'Ce', 'Xe', 'Tm', 'Cs', 'Cr', 'Cu', 'La', 'Li', 'Tl', 'Lu', 'Th', 'Ti', 'Te', 'Tb', 'Tc', 'Ta', 'Yb', 'Dy', 'I', 'U', 'Y', 'Ac', 'Ag', 'Ir', 'Am', 'Al', 'As', 'Ar', 'Au', 'In', 'Mo'] # 96
+#	cod_atomlist = ['Ru', 'Re', 'Ra', 'Rb', 'Rn', 'Rh', 'Be', 'Ba', 'Bi', 'Bk', 'Br', 'H', 'P', 'Os', 'Ge', 'Gd', 'Ga', 'Pr', 'Pt', 'Pu', 'C', 'Pb', 'Pa', 'Pd', 'Cd', 'Po', 'Pm', 'Ho', 'Hf', 'Hg', 'He', 'Mg', 'K', 'Mn', 'O', 'S', 'W', 'Zn', 'Eu', 'Zr', 'Er', 'Ni', 'Na', 'Nb', 'Nd', 'Ne', 'Np', 'Fe', 'B', 'F', 'Sr', 'N', 'Kr', 'Si', 'Sn', 'Sm', 'V', 'Sc', 'Sb', 'Se', 'Co', 'Cm', 'Cl', 'Ca', 'Cf', 'Ce', 'Xe', 'Tm', 'Cs', 'Cr', 'Cu', 'La', 'Li', 'Tl', 'Lu', 'Th', 'Ti', 'Te', 'Tb', 'Tc', 'Ta', 'Yb', 'Dy', 'I', 'U', 'Y', 'Ac', 'Ag', 'Ir', 'Am', 'Al', 'As', 'Ar', 'Au', 'In', 'Mo'] # 96
 
-	mp_atomlist = ['Ru', 'Re', 'Rb', 'Rh', 'Be', 'Ba', 'Bi', 'Br', 'H', 'P', 'Os', 'Ge', 'Gd', 'Ga', 'Pr', 'Pt', 'Pu', 'Mg', 'Pb','Pa', 'Pd', 'Cd', 'Pm', 'Ho', 'Hf', 'Hg', 'He', 'C', 'K', 'Mn', 'O', 'S', 'W', 'Zn', 'Eu', 'Zr', 'Er', 'Ni', 'Na','Nb', 'Nd', 'Ne', 'Np', 'Fe', 'B', 'F', 'Sr', 'N', 'Kr', 'Si', 'Sn', 'Sm', 'V', 'Sc', 'Sb', 'Se', 'Co', 'Cl', 'Ca','Ce', 'Xe', 'Tm', 'Cs', 'Cr', 'Cu', 'La', 'Li', 'Tl', 'Lu', 'Th', 'Ti', 'Te', 'Tb', 'Tc', 'Ta', 'Yb', 'Dy', 'I','U', 'Y', 'Ac', 'Ag', 'Ir', 'Al', 'As', 'Ar', 'Au', 'In', 'Mo'] #89
+#	mp_atomlist = ['Ru', 'Re', 'Rb', 'Rh', 'Be', 'Ba', 'Bi', 'Br', 'H', 'P', 'Os', 'Ge', 'Gd', 'Ga', 'Pr', 'Pt', 'Pu', 'Mg', 'Pb','Pa', 'Pd', 'Cd', 'Pm', 'Ho', 'Hf', 'Hg', 'He', 'C', 'K', 'Mn', 'O', 'S', 'W', 'Zn', 'Eu', 'Zr', 'Er', 'Ni', 'Na','Nb', 'Nd', 'Ne', 'Np', 'Fe', 'B', 'F', 'Sr', 'N', 'Kr', 'Si', 'Sn', 'Sm', 'V', 'Sc', 'Sb', 'Se', 'Co', 'Cl', 'Ca','Ce', 'Xe', 'Tm', 'Cs', 'Cr', 'Cu', 'La', 'Li', 'Tl', 'Lu', 'Th', 'Ti', 'Te', 'Tb', 'Tc', 'Ta', 'Yb', 'Dy', 'I','U', 'Y', 'Ac', 'Ag', 'Ir', 'Al', 'As', 'Ar', 'Au', 'In', 'Mo'] #89
 
-	all_atomlist = list(set(cod_atomlist+mp_atomlist))
+#	all_atomlist = list(set(cod_atomlist+mp_atomlist))
 
   # You can specify your own element lists (if you don't want to use the above list)
-	#all_atomlist = ['N','Co', 'Fe']
+	all_atomlist = ['V']
 
 
 	cod_atomindex = {}
@@ -41,7 +41,7 @@ def get_image_one_atom(atom,fakeatoms_grid,nbins,scale):
 	image = numpy.zeros((1,nbins**3))
 	grid_copy.append(atom)
 	drijk = grid_copy.get_distances(-1,range(0,nbins**3),mic=True)
-	pijk = numpy.exp(-scale*drijk**2)
+	pijk = atom.charge * numpy.exp(-scale*drijk**2)
 	image[:,:] = pijk.flatten()
 	return image.reshape(nbins,nbins,nbins)
 				
@@ -85,21 +85,16 @@ def get_image_all_atoms(atoms,nbins,scale,norm,num_cores):
 	return image,channellist
 	
 def image2pickle(image,channellist,savefilename):
-	dic = {'image':image.tolist(),'channel':channellist.tolist()}
+	dic = {'image':image.tolist()}
 	with open(savefilename,'w') as f:
 		json.dump(dic,f)
+	# You don't need to save channel_vector in case of making cell image
 
-
-def basis_translate(atoms):
-  N = len(atoms)
-  pos = atoms.positions
-  cg = np.mean(pos,0)
-  dr = 7.5 - cg #move to center of 15A-cubic box
-  dpos = np.repeat(dr.reshape(1,3),N,0)
-  new_pos = dpos + pos
-  atoms_ = atoms.copy()
-  atoms_.cell = 15.0*np.identity(3)
-  atoms_.positions = new_pos
+def extract_cell(atoms):
+  cell = atoms.cell
+  atoms_ = Atoms('V')
+  atoms_.cell = cell
+  atoms_.set_scaled_positions([0.5,0.5,0.5])
   return atoms_
 
 def file2image(args):
@@ -125,9 +120,8 @@ def file2image(args):
 		num_cores = args.nproc
 		nbins = args.nbins # the number of grid for generated output image
 	
-		image,channellist = get_image_all_atoms(basis_translate(atoms),nbins,scale,norm,num_cores)
-		#image2pickle(image,channellist,savefilename) # This exports the image file in a bad format which is not compatible with the rest of the codes
-		np.save(savefilename,image,allow_pickle=True, fix_imports=True) # this rectifies the problem
+		image,channellist = get_image_all_atoms(extract_cell(atoms),nbins,scale,norm,num_cores)
+		image2pickle(image,channellist,savefilename)
 		os.system('rm '+touchfile)
 	return 1
 
